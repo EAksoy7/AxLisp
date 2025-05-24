@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <editline/readline.h>
+#define VERSION "0.0.2"
 
-/* Input buffer */
 int main(int argc, char* argv[]){
 
 	/* Version and exit info */
-	puts("Welcome to Elisp.");
+	printf("Welcome to Elisp, version %s\n", VERSION);
 	puts("Press Ctrl+c to exit the interpreter");
 
 	while(1){
