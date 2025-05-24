@@ -1,0 +1,18 @@
+A small LISP implementation in C, created by following buildyourownlisp.com. I'm working on this as a study project to learn more about LISP and C. Perhaps someday I'll make it into a more full fledged LISP version.
+
+Currently in development, no features to speak of. 
+
+To compile, please include the -ledit flag.
+Some fiddling may be necessary with the editline import. Some operating systems may need an additional #include with editline/history.h or histedit.h
+
+Issues:
+	All versions:
+		N/A
+	Windows:
+		Arrow key navigation unimplemented
+		Command history unimplemented
+		Placeholder readline() function currently in use
+	Mac:
+		N/A
+	Linux:
+		N/A
