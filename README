@@ -2,12 +2,14 @@ A small LISP implementation in C, created by following buildyourownlisp.com. I'm
 
 Currently in development, no features to speak of. 
 
-To compile, please include the -ledit flag.
+To compile with GCC:
+gcc -std=c99 -Wall elisp.c mpc.c -ledit -lm -o elisp
+
 Some fiddling may be necessary with the editline import. Some operating systems may need an additional #include with editline/history.h or histedit.h
 
-Issues:
+Issues/TODO:
 	All versions:
-		N/A
+		Add float support
 	Windows:
 		Arrow key navigation unimplemented
 		Command history unimplemented
