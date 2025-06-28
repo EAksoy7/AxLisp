@@ -36,7 +36,7 @@ int main(int argc, char* argv[]){
 	/* Parsers Defined */
 	mpca_lang(MPCA_LANG_DEFAULT, 
 	"																		\
-		number		:	/-?[0-9]+/ 				;							\
+		number		:	/-?\\d+(\\.\\d+)?/ 				;					\
 		operator	:	'+' | '-' | '*' | '/' | '%'	;						\
 		expression	:	<number> | '(' <operator> <expression>+ ')' ;		\
 		elisp		:	/^/ <operator> <expression>+ /$/ ;					\
