@@ -1,6 +1,7 @@
-#define VERSION "0.0.3"
+#define VERSION "0.0.4"
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "mpc.h"
 
 #ifdef _WIN32
@@ -25,6 +26,44 @@ void add_history(char* unused){}
 #include <editline/readline.h>
 #endif
 
+long eval_op(long x, char* op, long y){
+	if (strcmp(op, "^") == 0) {return (long) pow((double) x, (double) y);}
+	if (strcmp(op, "+") == 0) {return x + y;}
+	if (strcmp(op, "-") == 0) {return x - y;}			
+	if (strcmp(op, "*") == 0) {return x * y;}
+	if (strcmp(op, "/") == 0) {return x / y;}	
+	if (strcmp(op, "%") == 0) {return x % y;}
+	return 0;
+}
+
+long eval(mpc_ast_t* t){
+
+	/* If the tag is a number, it has no children so immediately return the number	*/
+	if(strstr(t->tag, "number")){
+		return atoi(t->contents);
+	}
+
+	/* The second child is always the operator */
+	char* op = t->children[1]->contents;
+
+	/* Evaluate the third child and store in x */
+	long x = eval(t->children[2]);
+
+	/* Special case for - operator and one argument; Very unelegant, fix this */
+	if(strstr(op, "-") && !strstr(t->children[3]->tag, "expr")){
+		return x * -1;
+	}
+
+	/* Iterate the remaining children and combine them with x */
+	int i = 3;
+	while(strstr(t->children[i]->tag, "expr")){
+		x = eval_op(x, op, eval(t->children[i]));
+		i++;
+	}
+	
+	return x;
+}
+
 int main(int argc, char* argv[]){
 
 	/* Parsers Declared */
@@ -37,7 +76,7 @@ int main(int argc, char* argv[]){
 	mpca_lang(MPCA_LANG_DEFAULT, 
 	"																		\
 		number		:	/-?\\d+(\\.\\d+)?/ 				;					\
-		operator	:	'+' | '-' | '*' | '/' | '%'	;						\
+		operator	:	'+' | '-' | '*' | '/' | '%'	| '^';						\
 		expression	:	<number> | '(' <operator> <expression>+ ')' ;		\
 		elisp		:	/^/ <operator> <expression>+ /$/ ;					\
 	",
@@ -56,6 +95,8 @@ int main(int argc, char* argv[]){
 		if(mpc_parse("stdin", input, Elisp, &r)){
 			/* Success */
 			mpc_ast_print(r.output);
+			long result = eval(r.output);
+			printf("%li\n", result);
 			mpc_ast_delete(r.output);
 		} else {
 			/* Error */

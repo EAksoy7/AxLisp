@@ -1,6 +1,6 @@
 A small LISP implementation in C, created by following buildyourownlisp.com. I'm working on this as a study project to learn more about LISP and C. Perhaps someday I'll make it into a more full fledged LISP version.
 
-Currently in development, no features to speak of. 
+Currently in development, essentially a glorified calculator at this point
 
 To compile with GCC:
 gcc -std=c99 -Wall elisp.c mpc.c -ledit -lm -o elisp
@@ -9,7 +9,10 @@ Some fiddling may be necessary with the editline import. Some operating systems 
 
 Issues/TODO:
 	All versions:
-		Add float support
+		Add float support; change eval() to have conditional to check for float or int and use atoi or atof therein
+		The way the interpreter deals with a minus operation with one operand is very messy and a more elegant solution should be sought
+		Add min and max operators
+		Add tree information functions from book
 	Windows:
 		Arrow key navigation unimplemented
 		Command history unimplemented
