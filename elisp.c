@@ -1,3 +1,14 @@
+/*
++ JMJ +
+
+Emin's Lisp
+A little implementation of Lisp, made by me with the help of buildyourownlisp.com
+
+Emin Aksoy
+2025 A.D.
+
+*/
+
 #define VERSION "0.0.4"
 #include <stdio.h>
 #include <stdlib.h>
@@ -62,6 +73,26 @@ long eval(mpc_ast_t* t){
 	}
 	
 	return x;
+}
+
+/* Calculates the number of leaves in the given tree */
+int num_l(mpc_ast_t* t){
+	if(t->children_num == 0){
+		return 0;
+	} 
+	else {
+		int children_total = 0;	
+		
+		for(int i = 0; i < t->children_num; i++){
+			children_total += num_l(t->children[i]);
+		}	
+		return children_total + t->children_num;
+	}
+}
+
+/* Calculates the number of branches in the given tree */
+int num_b(mpc_ast_t* t){
+	/* Do stuff */
 }
 
 int main(int argc, char* argv[]){
