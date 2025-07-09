@@ -78,7 +78,7 @@ long eval(mpc_ast_t* t){
 /* Calculates the number of leaves in the given tree */
 int num_l(mpc_ast_t* t){
 	if(t->children_num == 0){
-		return 0;
+		return 1;
 	} 
 	else {
 		int children_total = 0;	
@@ -86,7 +86,7 @@ int num_l(mpc_ast_t* t){
 		for(int i = 0; i < t->children_num; i++){
 			children_total += num_l(t->children[i]);
 		}	
-		return children_total + t->children_num;
+		return children_total;
 	}
 }
 
@@ -127,7 +127,7 @@ int main(int argc, char* argv[]){
 			/* Success */
 			mpc_ast_print(r.output);
 			long result = eval(r.output);
-			printf("%li\n", result);
+			printf("%li %d\n", result, num_l(r.output));
 			mpc_ast_delete(r.output);
 		} else {
 			/* Error */
