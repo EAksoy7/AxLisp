@@ -37,28 +37,28 @@ void add_history(char* unused){}
 #include <editline/readline.h>
 #endif
 
-long eval_op(long x, char* op, long y){
-	if (strcmp(op, "^") == 0) {return (long) pow((double) x, (double) y);}
+double eval_op(double x, double y, char* op){
+	if (strcmp(op, "^") == 0) {return pow(x, y);}
 	if (strcmp(op, "+") == 0) {return x + y;}
 	if (strcmp(op, "-") == 0) {return x - y;}			
 	if (strcmp(op, "*") == 0) {return x * y;}
 	if (strcmp(op, "/") == 0) {return x / y;}	
-	if (strcmp(op, "%") == 0) {return x % y;}
+	if (strcmp(op, "%") == 0) {return fmod(x, y);}
 	return 0;
 }
 
-long eval(mpc_ast_t* t){
+double eval(mpc_ast_t* t){
 
 	/* If the tag is a number, it has no children so immediately return the number	*/
 	if(strstr(t->tag, "number")){
-		return atoi(t->contents);
+		return atof(t->contents);
 	}
 
 	/* The second child is always the operator */
 	char* op = t->children[1]->contents;
 
 	/* Evaluate the third child and store in x */
-	long x = eval(t->children[2]);
+	double x = eval(t->children[2]);
 
 	/* Special case for - operator and one argument; Very unelegant, fix this */
 	if(strstr(op, "-") && !strstr(t->children[3]->tag, "expr")){
@@ -68,7 +68,7 @@ long eval(mpc_ast_t* t){
 	/* Iterate the remaining children and combine them with x */
 	int i = 3;
 	while(strstr(t->children[i]->tag, "expr")){
-		x = eval_op(x, op, eval(t->children[i]));
+		x = eval_op(x, eval(t->children[i]), op);
 		i++;
 	}
 	
@@ -125,9 +125,15 @@ int main(int argc, char* argv[]){
 		mpc_result_t r;
 		if(mpc_parse("stdin", input, Elisp, &r)){
 			/* Success */
-			mpc_ast_print(r.output);
-			long result = eval(r.output);
-			printf("%li %d\n", result, num_l(r.output));
+			double result = eval(r.output);
+			
+			/* If the result is an integer value, cast it to long int */
+			if(rintf(result) == result){
+				printf("%ld\n", (long) result);
+			}
+			else{
+				printf("%lf\n", result);
+			}
 			mpc_ast_delete(r.output);
 		} else {
 			/* Error */

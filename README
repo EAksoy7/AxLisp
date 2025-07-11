@@ -9,10 +9,10 @@ Some fiddling may be necessary with the editline import. Some operating systems 
 
 Issues/TODO:
 	All versions:
-		Add float support; change eval() to have conditional to check for float or int and use atoi or atof therein
 		The way the interpreter deals with a minus operation with one operand is very messy and a more elegant solution should be sought
 		Add min and max operators
 		Add tree information functions from book
+		The current way the interpreter handles floats is by casting all given values to floats and then recasting them to int if necessary. This system should be replaced with a tagged value type system later on down the line.
 	Windows:
 		Arrow key navigation unimplemented
 		Command history unimplemented
