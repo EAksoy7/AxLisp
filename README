@@ -1,4 +1,4 @@
-Elisp (Emin's Lisp) is a small LISP implementation in C, created by following buildyourownlisp.com. I'm working on this as a study project to learn more about LISP and C. Perhaps someday I'll make it into a more full fledged LISP version.
+AxLisp (Aksoy's Lisp) is a small LISP implementation in C, created by following buildyourownlisp.com. I'm working on this as a study project to learn more about LISP and C. Perhaps someday I'll make it into a more full fledged LISP version.
 
 Currently in development, essentially a glorified calculator at this point
 
